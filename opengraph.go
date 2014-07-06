@@ -1,4 +1,4 @@
-// package opengraph extracts Open Graph metadata from html documents.
+// Package opengraph extracts Open Graph metadata from html documents.
 // See http://ogp.me/ for more information about the Open Graph protocol.
 //
 // Usage:
