@@ -1,48 +1,52 @@
-// package opengraph is a library for extracting OpenGraph meta-data from an html document.
-// See http://ogp.me/ for more information about the OpenGraph project.
-package main
+// package opengraph extracts Open Graph metadata from html documents.
+// See http://ogp.me/ for more information about the Open Graph protocol.
+//
+// Usage:
+// 	import "github.com/rojters/opengraph"
+//
+// To extract Open Graph metadata from a movie on IMDb:
+//
+// 	res, _ := http.Get("http://www.imdb.com/title/tt0118715/")
+// 	og, _ := opengraph.Extract(res.Body)
+// 	for _, md := range og {
+// 		fmt.Printf("%s = %s\n", md.Property, md.Content)
+// 	}
+//
+// Which will output:
+//
+// 	url = http://www.imdb.com/title/tt0118715/
+// 	type = video.movie
+// 	title = The Big Lebowski (1998)
+// 	site_name = IMDb
+// 	description = Directed by Joel Coen, Ethan Coen.  With Jeff Bridges ...
+// 	...
+//
+package opengraph
 
 import (
-	//"errors"
-	"fmt"
 	"io"
 	"strings"
 
 	"code.google.com/p/go.net/html"
 )
 
-type OpenGraph struct {
-	Title *string
-	Type  *string
-	Image *string
-	Url   *string
+type MetaData struct {
+	Property string // Porperty attribute without namespace prefix.
+	Content  string // See http://ogp.me/#data_types for a list of content attribute types.
 }
 
-type ogAttr struct {
-	property string
-	content  string
-}
+// By default Extract will only return metadata in the Open Graph namespace.
+// This variable can be changed to get data from other namespaces.
+// Ex: 'fb:' for Facebook or to get all metadata regardless of namespace, set it to the empty string.
+var Namespace = "og:"
 
-// Extract extracts the OpenGraph data from a html document.
+// Extract extracts Open Graph metadata from a html document.
+// If no relevant metadata is found the result will be empty.
 // The input is assumed to be UTF-8 encoded.
-func Extract(r io.Reader) (*OpenGraph, error) {
+func Extract(doc io.Reader) ([]MetaData, error) {
 
-	tags, err := ogAttrs(r)
-
-	if err != nil {
-		return nil, err
-	}
-
-	fmt.Println(tags)
-
-	return nil, nil
-
-}
-
-// ogAttrs extracts the OpenGraph attributes from meta tags.
-func ogAttrs(r io.Reader) ([]ogAttr, error) {
-	var tags []ogAttr
-	z := html.NewTokenizer(r)
+	var tags []MetaData
+	z := html.NewTokenizer(doc)
 
 	for {
 		tt := z.Next()
@@ -66,23 +70,11 @@ func ogAttrs(r io.Reader) ([]ogAttr, error) {
 				}
 			}
 
-			if strings.HasPrefix(prop, "og:") {
-				tags = append(tags, ogAttr{prop, cont})
+			if strings.HasPrefix(prop, Namespace) && cont != "" {
+				tags = append(tags, MetaData{prop[len(Namespace):], cont})
 			}
 		}
 	}
 
 	return tags, nil
-}
-
-// test, remove later
-func main() {
-	//s := `<p>Links:</p><ul><li><a href="foo">Foo</a><li><a href="/bar/baz">BarBaz</a></ul>`
-	s := `<meta property='' content="http://ia.media-imdb.com/images/M/MV5BNjc1NzYwODEyMV5BMl5BanBnXkFtZTcwNTcxMzU1MQ@@._V1_SY1200_CR126,0,630,1200_AL_.jpg" />
-	<meta property='og:type' content="video.tv_show" />
-    <meta property='fb:app_id' content='115109575169727' />
-    <meta property='og:title' content="The Wire (TV Series 2002–2008)" />
-    <meta property='og:site_name' content='IMDb' />`
-	rdr := strings.NewReader(s)
-	(Extract(rdr))
 }
