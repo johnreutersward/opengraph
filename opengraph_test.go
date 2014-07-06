@@ -14,6 +14,15 @@ var tt1 = `<head>
 <meta property="og:image" content="http://ia.media-imdb.com/images/rock.jpg" />
 </head>`
 
+var tt2 = `<head>
+<title>The Rock (1996)</title>
+<meta property="og:title" content="The Rock" />
+<meta property="fb:app_id" content="115109575169727" />
+<meta property="" content="video.movie" />
+<meta property="og:url" content="http://www.imdb.com/title/tt0117500/" />
+<meta property="og:image" content="" />
+</head>`
+
 func TestExport(t *testing.T) {
 
 	var ogTests = []struct {
@@ -54,6 +63,14 @@ func TestExport(t *testing.T) {
 				{"og:image", "http://ia.media-imdb.com/images/rock.jpg"},
 			},
 		},
+		{
+			tt2,
+			"og:",
+			[]MetaData{
+				{"title", "The Rock"},
+				{"url", "http://www.imdb.com/title/tt0117500/"},
+			},
+		},
 	}
 
 	for _, tt := range ogTests {
@@ -65,7 +82,7 @@ func TestExport(t *testing.T) {
 		}
 
 		if len(og) != len(tt.expected) {
-			t.Fatalf("\ngot: %+v\nexpected: %+v", og, tt.expected)
+			t.Fatalf("got: %+v, expected: %+v", og, tt.expected)
 		}
 
 		for i, _ := range og {
