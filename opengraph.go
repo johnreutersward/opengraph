@@ -18,7 +18,7 @@ type OpenGraph struct {
 	Url   *string
 }
 
-type ogTag struct {
+type ogAttr struct {
 	property string
 	content  string
 }
@@ -40,8 +40,8 @@ func Extract(r io.Reader) (*OpenGraph, error) {
 }
 
 // ogAttrs extracts the OpenGraph attributes from meta tags.
-func ogAttrs(r io.Reader) ([]ogTag, error) {
-	var tags []ogTag
+func ogAttrs(r io.Reader) ([]ogAttr, error) {
+	var tags []ogAttr
 	z := html.NewTokenizer(r)
 
 	for {
@@ -67,7 +67,7 @@ func ogAttrs(r io.Reader) ([]ogTag, error) {
 			}
 
 			if strings.HasPrefix(prop, "og:") {
-				tags = append(tags, ogTag{prop, cont})
+				tags = append(tags, ogAttr{prop, cont})
 			}
 		}
 	}
