@@ -1,6 +1,7 @@
 package opengraph
 
 import (
+	"net/http"
 	"strings"
 	"testing"
 )
@@ -94,8 +95,22 @@ func TestExport(t *testing.T) {
 }
 
 func BenchmarkExport(b *testing.B) {
+	b.StopTimer()
 	rdr := strings.NewReader(tt1)
+	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		Extract(rdr)
+	}
+}
+
+func BenchmarkExport2(b *testing.B) {
+	b.StopTimer()
+	r, err := http.Get("http://www.imdb.com/title/tt0118715/")
+	if err != nil {
+		b.Skipf("skipping, net/http err: %s", err.Error())
+	}
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		Extract(r.Body)
 	}
 }
