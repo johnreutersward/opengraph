@@ -4,7 +4,7 @@ opengraph is a Go library for extracting Open Graph metadata from html documents
 
 **Documentation:** <http://godoc.org/github.com/rojters/opengraph>  
 **Open Graph protocol:** <http://ogp.me/>  
-**Build Status:** [![travis-ci status](https://api.travis-ci.org/rojters/opengraph.png)](https://travis-ci.org/rojters/opengraph)  
+**Build Status:** [![travis-ci status](https://api.travis-ci.org/rojters/opengraph.png)](https://travis-ci.org/rojters/opengraph) [![Build Status](https://drone.io/github.com/rojters/opengraph/status.png)](https://drone.io/github.com/rojters/opengraph/latest)  
 
 ## Usage ##
 

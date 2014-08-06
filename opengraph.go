@@ -44,10 +44,8 @@ var Namespace = "og:"
 // If no relevant metadata is found the result will be empty.
 // The input is assumed to be UTF-8 encoded.
 func Extract(doc io.Reader) ([]MetaData, error) {
-
 	var tags []MetaData
 	z := html.NewTokenizer(doc)
-
 	for {
 		tt := z.Next()
 		if tt == html.ErrorToken {
