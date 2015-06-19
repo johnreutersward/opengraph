@@ -24,6 +24,15 @@ var tt2 = `<head>
 <meta property="og:image" content="" />
 </head>`
 
+var tt3 = `<head>
+<title>The Rock (1996)</title>
+<meta property="og:title" content="The Rock">
+<meta property="fb:app_id" content="115109575169727">
+<meta property="og:type" content="video.movie">
+<meta property="og:url" content="http://www.imdb.com/title/tt0117500/">
+<meta property="og:image" content="http://ia.media-imdb.com/images/rock.jpg">
+</head>`
+
 func TestExport(t *testing.T) {
 
 	var ogTests = []struct {
@@ -70,6 +79,16 @@ func TestExport(t *testing.T) {
 			[]MetaData{
 				{"title", "The Rock"},
 				{"url", "http://www.imdb.com/title/tt0117500/"},
+			},
+		},
+		{
+			tt3,
+			"og:",
+			[]MetaData{
+				{"title", "The Rock"},
+				{"type", "video.movie"},
+				{"url", "http://www.imdb.com/title/tt0117500/"},
+				{"image", "http://ia.media-imdb.com/images/rock.jpg"},
 			},
 		},
 	}
