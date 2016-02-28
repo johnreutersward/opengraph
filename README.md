@@ -1,6 +1,6 @@
 # [![Open Graph protocol](http://imgur.com/pqFdEuo.png?1)](http://ogp.me/) opengraph #
 
-opengraph is a Go library for extracting Open Graph metadata from HTML documents.
+opengraph is a Go library and command-line tool for extracting Open Graph metadata from HTML documents.
 
 **Documentation:** <http://godoc.org/github.com/rojters/opengraph>  
 **Open Graph protocol:** <http://ogp.me/>  
