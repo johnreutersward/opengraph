@@ -94,7 +94,11 @@ func ExtractPrefix(doc io.Reader, prefix string) ([]MetaData, error) {
 				}
 				tagPrefix = prefix
 			} else {
-				tagPrefix = prop[:strings.Index(prop, ":")]
+				idx := strings.Index(prop, ":")
+				if idx == -1 {
+					continue
+				}
+				tagPrefix = prop[:idx]
 			}
 
 			tags = append(tags, MetaData{prop[len(tagPrefix+":"):], cont, tagPrefix})
