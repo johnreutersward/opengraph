@@ -1,6 +1,6 @@
 # [![Open Graph protocol](http://imgur.com/pqFdEuo.png?1)](http://ogp.me/) opengraph #
 
-opengraph is a Go library for extracting Open Graph metadata from html documents.
+opengraph is a Go library for extracting Open Graph metadata from HTML documents.
 
 **Documentation:** <http://godoc.org/github.com/rojters/opengraph>  
 **Open Graph protocol:** <http://ogp.me/>  
@@ -12,12 +12,12 @@ opengraph is a Go library for extracting Open Graph metadata from html documents
 import "github.com/rojters/opengraph"
 ```
 
-To extract Open Graph metadata from a movie on IMDb:
+To extract Open Graph metadata from a movie on IMDb (sans error handling):
 ```go
 res, _ := http.Get("http://www.imdb.com/title/tt0118715/")
-og, _ := opengraph.Extract(res.Body)
-for _, md := range og {
-	fmt.Printf("%s = %s\n", md.Property, md.Content)
+md, _ := opengraph.Extract(res.Body)
+for i := range md {
+	fmt.Printf("%s = %s\n", md[i].Property, md[i].Content)
 }
 ```
 

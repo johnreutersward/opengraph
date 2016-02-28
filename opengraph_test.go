@@ -33,81 +33,99 @@ var tt3 = `<head>
 <meta property="og:image" content="http://ia.media-imdb.com/images/rock.jpg">
 </head>`
 
+var tt4 = `
+<head>
+<title>Apple Watch Hermès</title>
+<meta name="og:title" content="Découvrez la Apple Watch Hermès.">
+<meta name="og:site_name" content="Apple Watch Hermès">
+<meta name="" content="website">
+<meta property="og:locale" name="og:country" content="fr">
+<meta name="og:url" content="http://hermes.com/applewatchhermes">
+<meta itemprop="name" content="Découvrez la Apple Watch Hermès.">`
+
 func TestExport(t *testing.T) {
 
 	var ogTests = []struct {
 		doc      string
-		ns       string
+		prefix   string
 		expected []MetaData
 	}{
 		{
 			"",
-			"og:",
+			"og",
 			[]MetaData{},
 		},
 		{
 			tt1,
-			"og:",
+			"og",
 			[]MetaData{
-				{"title", "The Rock"},
-				{"type", "video.movie"},
-				{"url", "http://www.imdb.com/title/tt0117500/"},
-				{"image", "http://ia.media-imdb.com/images/rock.jpg"},
+				{"title", "The Rock", "og"},
+				{"type", "video.movie", "og"},
+				{"url", "http://www.imdb.com/title/tt0117500/", "og"},
+				{"image", "http://ia.media-imdb.com/images/rock.jpg", "og"},
 			},
 		},
 		{
 			tt1,
-			"fb:",
+			"fb",
 			[]MetaData{
-				{"app_id", "115109575169727"},
+				{"app_id", "115109575169727", "fb"},
 			},
 		},
 		{
 			tt1,
 			"",
 			[]MetaData{
-				{"og:title", "The Rock"},
-				{"fb:app_id", "115109575169727"},
-				{"og:type", "video.movie"},
-				{"og:url", "http://www.imdb.com/title/tt0117500/"},
-				{"og:image", "http://ia.media-imdb.com/images/rock.jpg"},
+				{"title", "The Rock", "og"},
+				{"app_id", "115109575169727", "fb"},
+				{"type", "video.movie", "og"},
+				{"url", "http://www.imdb.com/title/tt0117500/", "og"},
+				{"image", "http://ia.media-imdb.com/images/rock.jpg", "og"},
 			},
 		},
 		{
 			tt2,
-			"og:",
+			"og",
 			[]MetaData{
-				{"title", "The Rock"},
-				{"url", "http://www.imdb.com/title/tt0117500/"},
+				{"title", "The Rock", "og"},
+				{"url", "http://www.imdb.com/title/tt0117500/", "og"},
 			},
 		},
 		{
 			tt3,
-			"og:",
+			"og",
 			[]MetaData{
-				{"title", "The Rock"},
-				{"type", "video.movie"},
-				{"url", "http://www.imdb.com/title/tt0117500/"},
-				{"image", "http://ia.media-imdb.com/images/rock.jpg"},
+				{"title", "The Rock", "og"},
+				{"type", "video.movie", "og"},
+				{"url", "http://www.imdb.com/title/tt0117500/", "og"},
+				{"image", "http://ia.media-imdb.com/images/rock.jpg", "og"},
+			},
+		},
+		{
+			tt4,
+			"og",
+			[]MetaData{
+				{"title", "Découvrez la Apple Watch Hermès.", "og"},
+				{"site_name", "Apple Watch Hermès", "og"},
+				{"locale", "fr", "og"},
+				{"url", "http://hermes.com/applewatchhermes", "og"},
 			},
 		},
 	}
 
-	for _, tt := range ogTests {
-		Namespace = tt.ns
-		og, err := Extract(strings.NewReader(tt.doc))
-
+	for ti, tt := range ogTests {
+		og, err := ExtractPrefix(strings.NewReader(tt.doc), tt.prefix)
 		if err != nil {
-			t.Errorf("err: %s", err.Error())
+			t.Errorf("Test %d err: %s", ti, err.Error())
 		}
 
 		if len(og) != len(tt.expected) {
-			t.Fatalf("got: %+v, expected: %+v", og, tt.expected)
+			t.Fatalf("Test %d got: %+v, expected: %+v", ti, og, tt.expected)
 		}
 
 		for i, _ := range og {
 			if og[i].Property != tt.expected[i].Property || og[i].Content != tt.expected[i].Content {
-				t.Errorf("got: %+v, expected: %+v", og[i], tt.expected[i])
+				t.Errorf("Test %d got: %+v, expected: %+v", ti, og[i], tt.expected[i])
 			}
 		}
 	}
