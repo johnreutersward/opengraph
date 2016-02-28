@@ -1,15 +1,15 @@
-// Package opengraph extracts Open Graph metadata from html documents.
+// Package opengraph extracts Open Graph metadata from HTML documents.
 // See http://ogp.me/ for more information about the Open Graph protocol.
 //
 // Usage:
 // 	import "github.com/rojters/opengraph"
 //
-// To extract Open Graph metadata from a movie on IMDb:
+// To extract Open Graph metadata from a movie on IMDb (sans error handling):
 //
 // 	res, _ := http.Get("http://www.imdb.com/title/tt0118715/")
-// 	og, _ := opengraph.Extract(res.Body)
-// 	for _, md := range og {
-// 		fmt.Printf("%s = %s\n", md.Property, md.Content)
+// 	md, _ := opengraph.Extract(res.Body)
+// 	for i := range md {
+// 		fmt.Printf("%s = %s\n", md[i].Property, md[i].Content)
 // 	}
 //
 // Which will output:
@@ -30,20 +30,26 @@ import (
 	"golang.org/x/net/html"
 )
 
+const (
+	defaultPrefix = "og"
+)
+
 type MetaData struct {
-	Property string // Porperty attribute without namespace prefix.
-	Content  string // See http://ogp.me/#data_types for a list of content attribute types.
+	Property string // Property attribute without prefix.
+	Content  string // Content attribute. See http://ogp.me/#data_types for a list of content attribute types.
+	Prefix   string
 }
 
-// By default Extract will only return metadata in the Open Graph namespace.
-// This variable can be changed to get data from other namespaces.
-// Ex: 'fb:' for Facebook or to get all metadata regardless of namespace, set it to the empty string.
-var Namespace = "og:"
-
-// Extract extracts Open Graph metadata from a html document.
+// Extract extracts Open Graph metadata from a HTML document.
 // If no relevant metadata is found the result will be empty.
 // The input is assumed to be UTF-8 encoded.
 func Extract(doc io.Reader) ([]MetaData, error) {
+	return ExtractPrefix(doc, defaultPrefix)
+}
+
+// Same as Extract but extracts metadata with a specific prefix, e.g. "fb" for Facebook.
+// If prefix is empty all matching metadata is extracted.
+func ExtractPrefix(doc io.Reader, prefix string) ([]MetaData, error) {
 	var tags []MetaData
 	z := html.NewTokenizer(doc)
 	for {
@@ -57,24 +63,41 @@ func Extract(doc io.Reader) ([]MetaData, error) {
 
 		t := z.Token()
 
-		if t.Type == html.EndTagToken && t.Data == "head" {
+		if t.Data == "head" && t.Type == html.EndTagToken {
 			return tags, nil
 		}
 
 		if t.Data == "meta" {
-			var prop, cont string
+			var prop, cont, name, tagPrefix string
 			for _, a := range t.Attr {
 				switch a.Key {
 				case "property":
 					prop = a.Val
+				case "name":
+					name = a.Val
 				case "content":
 					cont = a.Val
 				}
 			}
 
-			if strings.HasPrefix(prop, Namespace) && cont != "" {
-				tags = append(tags, MetaData{prop[len(Namespace):], cont})
+			if prop == "" {
+				prop = name
 			}
+
+			if prop == "" || cont == "" {
+				continue
+			}
+
+			if prefix != "" {
+				if !strings.HasPrefix(prop, prefix+":") {
+					continue
+				}
+				tagPrefix = prefix
+			} else {
+				tagPrefix = prop[:strings.Index(prop, ":")]
+			}
+
+			tags = append(tags, MetaData{prop[len(tagPrefix+":"):], cont, tagPrefix})
 		}
 	}
 
