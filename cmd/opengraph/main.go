@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	version = "0.0.1"
+	version = "0.0.2"
 )
 
 func printUsage() {
@@ -21,7 +21,7 @@ func printUsage() {
 }
 
 func printVersion() {
-	fmt.Fprintf(os.Stdout, "og v%s\n", version)
+	fmt.Fprintf(os.Stdout, "opengraph v%s\n", version)
 	os.Exit(0)
 }
 
