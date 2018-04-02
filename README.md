@@ -38,7 +38,7 @@ description = Directed by Joel Coen, Ethan Coen.  With Jeff Bridges ...
 Install
 
 ```bash
-go get github.com/johnreutersward/opengraph/cmd/opengraph
+$ go get github.com/johnreutersward/opengraph/cmd/opengraph
 ```
 
 Run
