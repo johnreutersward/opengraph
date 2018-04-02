@@ -4,7 +4,7 @@ opengraph is a Go library and command-line tool for extracting Open Graph metada
 
 **Documentation:** <http://godoc.org/github.com/johnreutersward/opengraph>  
 **Open Graph protocol:** <http://ogp.me/>  
-**Build Status:** [![travis-ci status](https://api.travis-ci.org/rojters/opengraph.png)](https://travis-ci.org/rojters/opengraph)  
+**Build Status:** [![travis-ci status](https://api.travis-ci.org/johnreutersward/opengraph.png)](https://travis-ci.org/johnreutersward/opengraph)  
 
 ## Usage ##
 
