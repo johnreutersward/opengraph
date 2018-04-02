@@ -2,14 +2,14 @@
 
 opengraph is a Go library and command-line tool for extracting Open Graph metadata from HTML documents.
 
-**Documentation:** <http://godoc.org/github.com/rojters/opengraph>  
+**Documentation:** <http://godoc.org/github.com/johnreutersward/opengraph>  
 **Open Graph protocol:** <http://ogp.me/>  
-**Build Status:** [![travis-ci status](https://api.travis-ci.org/rojters/opengraph.png)](https://travis-ci.org/rojters/opengraph) [![Build Status](https://drone.io/github.com/rojters/opengraph/status.png)](https://drone.io/github.com/rojters/opengraph/latest)  
+**Build Status:** [![travis-ci status](https://api.travis-ci.org/rojters/opengraph.png)](https://travis-ci.org/rojters/opengraph)  
 
 ## Usage ##
 
 ```go
-import "github.com/rojters/opengraph"
+import "github.com/johnreutersward/opengraph"
 ```
 
 To extract Open Graph metadata from a movie on IMDb (sans error handling):

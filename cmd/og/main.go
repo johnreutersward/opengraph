@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/rojters/opengraph"
+	"github.com/johnreutersward/opengraph"
 )
 
 const (

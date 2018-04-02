@@ -2,7 +2,7 @@
 // See http://ogp.me/ for more information about the Open Graph protocol.
 //
 // Usage:
-// 	import "github.com/rojters/opengraph"
+// 	import "github.com/johnreutersward/opengraph"
 //
 // To extract Open Graph metadata from a movie on IMDb (sans error handling):
 //
