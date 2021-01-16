@@ -1,16 +1,22 @@
-# [![Open Graph protocol](http://imgur.com/pqFdEuo.png?1)](http://ogp.me/) opengraph
+# opengraph
 
-opengraph is a Go library and command-line tool for extracting Open Graph metadata from HTML documents.
+[![Build Status](https://travis-ci.org/johnreutersward/opengraph.svg?branch=master)](https://travis-ci.org/johnreutersward/opengraph)
+[![Go Reference](https://pkg.go.dev/badge/github.com/johnreutersward/opengraph.svg)](https://pkg.go.dev/github.com/johnreutersward/opengraph)
+[![Go Report Card](https://goreportcard.com/badge/github.com/johnreutersward/opengraph)](https://goreportcard.com/report/github.com/johnreutersward/opengraph)
 
-**Documentation:** <http://godoc.org/github.com/johnreutersward/opengraph>  
-**Open Graph protocol:** <http://ogp.me/>  
-**Build Status:** [![travis-ci status](https://api.travis-ci.org/johnreutersward/opengraph.png)](https://travis-ci.org/johnreutersward/opengraph)  
+![ogp](ogp.png?raw=true "ogp")
 
-## Usage
+> opengraph is a Go library and command-line tool for extracting [Open Graph](https://ogp.me/ "Open Graph protocol") metadata from HTML documents.
+
+## Library
+
+### Install
 
 ```go
 import "github.com/johnreutersward/opengraph"
 ```
+
+### Usage
 
 To extract Open Graph metadata from a movie on IMDb (sans error handling)
 
@@ -33,17 +39,23 @@ description = Directed by Joel Coen, Ethan Coen.  With Jeff Bridges ...
 ...
 ```
 
-## Command-line usage
+## Command-line tool
 
-Install
+### Install
 
-```bash
+Binary releases: 
+
+https://github.com/johnreutersward/opengraph/releases
+
+Or build from source:
+
+```
 $ go get github.com/johnreutersward/opengraph/cmd/opengraph
 ```
 
-Run
+### Usage
 
-```bash
+```
 $ opengraph http://www.imdb.com/title/tt0118715/
 type: video.movie
 title: The Big Lebowski (1998)
@@ -51,9 +63,9 @@ site_name: IMDb
 ...
 ```
 
-Output in JSON
+Output in JSON:
 
-```bash
+```
 $ opengraph -json http://www.imdb.com/title/tt0118715/
 [
   {
